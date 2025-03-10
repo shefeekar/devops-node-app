@@ -8,12 +8,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Dependencies
         run: npm install
-<<<<<<< HEAD
-      - name: test
-        run: npm test
- 
-=======
       - name: Run Tests
         run: npm test
       
->>>>>>> 5138a4052b50224a78329186d5ab8c68f759514c
