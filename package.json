@@ -10,7 +10,7 @@
   "dependencies": {
     "express": "^4.13.3"
   },
-  "devDepedencies": {
+  "devDependencies": {
     "jest": "^29.0.0"
   },
   "engines": {
