@@ -30,9 +30,7 @@ jobs:
 
       - name: Push Docker Image to Heroku
         run: |
-          echo "Tagging Docker image for Heroku..."
-          docker tag shefeekar/nodeapp registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-          echo "Pushing Docker image to Heroku Container Registry..."
+          docker tag shefeekar/nodeapp registry.heroku.com/my-heroku-app/web
           docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
       - name: Release the Container on Heroku
