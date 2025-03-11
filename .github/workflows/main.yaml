@@ -16,31 +16,31 @@ jobs:
         run: npm test
 
       - name: Build Docker Image
-        run: docker build -t shefeekar/nodeapp .
+        run: docker build -t shefeekar/nodeapp:latest .
 
       - name: Push Docker Image to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push shefeekar/nodeapp
+          docker push shefeekar/nodeapp:latest
 
       - name: Install Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Log in to Heroku Container Registry
         run: |
-          echo "Logging in to Heroku Container Registry..."
           echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
+
+      - name: Log in to Heroku CLI
+        run: heroku container:login
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
       - name: Push Docker Image to Heroku
         run: |
-          echo "Tagging Docker image for Heroku..."
-          docker tag shefeekar/nodeapp registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
-          echo "Pushing Docker image to Heroku Container Registry..."
-          docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+          docker tag shefeekar/nodeapp:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web:latest
+          docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web:latest
 
       - name: Release the Container on Heroku
-        run: |
-          echo "Releasing container on Heroku..."
-          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
+        run: heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
